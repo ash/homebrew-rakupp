@@ -5,7 +5,8 @@ class Rakupp < Formula
   sha256 "e421d96443cf12e0628318d2012da3aeb83c88f7695b8fbd08ee44690f304b8a"
   license "Artistic-2.0"
 
-  head "https://github.com/ash/rakupp.git", branch: "main" do
+  head do
+    url "https://github.com/ash/rakupp.git", branch: "main"
     depends_on "cmake" => :build
   end
 
