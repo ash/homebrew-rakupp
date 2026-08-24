@@ -10,7 +10,12 @@
 # `brew upgrade` — brew believes they already have something newer. A fresh
 # `brew install rakupp` gets 3.7.0 correctly. There is no formula-level fix:
 # Homebrew has no epoch for this, and `revision` only breaks ties within one
-# version. It resolves itself once upstream tags something above 3.14.0.
+# version.
+#
+# It resolves at the next release, deliberately: upstream's policy is now
+# plain monotonic versions and no cute numbers, with **the next release at
+# least 3.20.0** precisely so it clears 3.14.0 and those users get offered
+# the upgrade. See docs/dev/RELEASING.md, "Picking the number".
 #
 # So: do not "correct" a bump that looks like a downgrade. Check the TAG DATE
 # against CHANGELOG.md, not the number.
