@@ -1,8 +1,24 @@
+# NOTE ON VERSION ORDERING — read before bumping.
+#
+# Homebrew compares versions token by token, numerically, so it ranks
+# **3.14.0 ABOVE 3.7.0** (14 > 7). Upstream's v3.14.0 is a pi joke tagged on
+# 2026-08-11, BETWEEN v3.1.0 and v3.5.0 — it is four releases OLDER than
+# v3.7.0, not newer.
+#
+# Consequence, and it is not a mistake in this file: anyone who installed
+# while the formula pinned 3.14.0 will never be offered 3.7.0 by
+# `brew upgrade` — brew believes they already have something newer. A fresh
+# `brew install rakupp` gets 3.7.0 correctly. There is no formula-level fix:
+# Homebrew has no epoch for this, and `revision` only breaks ties within one
+# version. It resolves itself once upstream tags something above 3.14.0.
+#
+# So: do not "correct" a bump that looks like a downgrade. Check the TAG DATE
+# against CHANGELOG.md, not the number.
 class Rakupp < Formula
   desc "From-scratch Raku implementation in C++17 (interpreter + native compiler)"
   homepage "https://github.com/ash/rakupp"
-  url "https://github.com/ash/rakupp/archive/refs/tags/v3.14.0.tar.gz"
-  sha256 "6c0e0a110ba9607998da0596a26392f89b86c85b78f2cbe02f3ebdee6488431a"
+  url "https://github.com/ash/rakupp/archive/refs/tags/v3.7.0.tar.gz"
+  sha256 "ae31038c64856483a206c37cbb4d58f70d7f9f1617791f49c67a6438d0962f01"
   license "Artistic-2.0"
 
   head "https://github.com/ash/rakupp.git", branch: "main" do
@@ -12,9 +28,9 @@ class Rakupp < Formula
   # macOS installs the prebuilt universal binary (arm64 + x86_64, macOS 11+) —
   # no compile on either architecture. Linux builds from the source tarball.
   on_macos do
-    url "https://github.com/ash/rakupp/releases/download/v3.14.0/rakupp-macos-universal.tar.gz"
-    sha256 "6a9aa0966200844b4645baca3e62f96a4c4461c5100046ecebf93238eedf3083"
-    version "3.14.0"
+    url "https://github.com/ash/rakupp/releases/download/v3.7.0/rakupp-macos-universal.tar.gz"
+    sha256 "6ffbe86fde2b3507ff1b126bf2988500f362209102d6c4a4d837c731141fa07b"
+    version "3.7.0"
   end
   on_linux do
     depends_on "cmake" => :build
