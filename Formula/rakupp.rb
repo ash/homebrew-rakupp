@@ -22,8 +22,8 @@
 class Rakupp < Formula
   desc "From-scratch Raku implementation in C++17 (interpreter + native compiler)"
   homepage "https://github.com/ash/rakupp"
-  url "https://github.com/ash/rakupp/archive/refs/tags/v4.0.1.tar.gz"
-  sha256 "975766bdc054d4f66d2e7b522386359269f82874359c042d57bb6e11f05dc6b9"
+  url "https://github.com/ash/rakupp/archive/refs/tags/v5.2.0.tar.gz"
+  sha256 "e57806330fa9288d86c31e6722813321d107967abee3b8fffea28e912270ccd0"
   license "Artistic-2.0"
 
   head "https://github.com/ash/rakupp.git", branch: "main" do
@@ -33,9 +33,9 @@ class Rakupp < Formula
   # macOS installs the prebuilt universal binary (arm64 + x86_64, macOS 11+) —
   # no compile on either architecture. Linux builds from the source tarball.
   on_macos do
-    url "https://github.com/ash/rakupp/releases/download/v4.0.1/rakupp-macos-universal.tar.gz"
-    sha256 "99a18e524c5648cd7ff56a10e702c481ec10f4fa4e20b44403f2b39fa095d8cf"
-    version "4.0.1"
+    url "https://github.com/ash/rakupp/releases/download/v5.2.0/rakupp-macos-universal.tar.gz"
+    sha256 "f571a7e9fdb4ccb47127e314db6f7a4250c671942b1fcdfbf9d7f2df0cdb87a4"
+    version "5.2.0"
   end
   on_linux do
     depends_on "cmake" => :build
@@ -43,9 +43,12 @@ class Rakupp < Formula
 
   def install
     if File.exist?("bin/rakupp")
-      # Prebuilt binary tarball: bin/, lib/librakupp_rt.a, include/rakupp/*.
+      # Prebuilt binary tarball: bin/, lib/, include/rakupp/*. Every archive in
+      # lib/ is needed: `--exe` links the whole set (runtime, parser, Unicode
+      # tables, stubs) and refuses to compile when one is missing, and
+      # librakupp.dylib is the embedding library.
       bin.install "bin/rakupp"
-      lib.install "lib/librakupp_rt.a"
+      lib.install Dir["lib/*"]
       (include/"rakupp").install Dir["include/rakupp/*"]
     else
       # Source build. findRuntime() resolves the symlinked binary back into the
@@ -60,5 +63,9 @@ class Rakupp < Formula
     assert_equal "3", shell_output("#{bin}/rakupp -e 'say 1 + 2'").strip
     assert_equal "1267650600228229401496703205376",
                  shell_output("#{bin}/rakupp -e 'say 2 ** 100'").strip
+    # `--exe` needs every runtime archive in lib/; a partial install fails here.
+    (testpath/"hello.raku").write "say 6 * 7;\n"
+    system bin/"rakupp", "--exe", "-o", testpath/"hello", testpath/"hello.raku"
+    assert_equal "42", shell_output("#{testpath}/hello").strip
   end
 end
