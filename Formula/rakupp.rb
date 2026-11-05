@@ -22,8 +22,8 @@
 class Rakupp < Formula
   desc "From-scratch Raku implementation in C++17 (interpreter + native compiler)"
   homepage "https://github.com/ash/rakupp"
-  url "https://github.com/ash/rakupp/archive/refs/tags/v5.5.0.tar.gz"
-  sha256 "966c856fc6fc7a4df36ec4a994632576f52cb9c10c4ca39b3ae1e3476ab5d290"
+  url "https://github.com/ash/rakupp/archive/refs/tags/v5.6.2.tar.gz"
+  sha256 "858a0bfad527bc6e41d05fed65bc1a131123e249311345e42a231e6d2dc3fb2d"
   license "Artistic-2.0"
 
   head "https://github.com/ash/rakupp.git", branch: "main" do
@@ -33,9 +33,9 @@ class Rakupp < Formula
   # macOS installs the prebuilt universal binary (arm64 + x86_64, macOS 11+) —
   # no compile on either architecture. Linux builds from the source tarball.
   on_macos do
-    url "https://github.com/ash/rakupp/releases/download/v5.5.0/rakupp-macos-universal.tar.gz"
-    sha256 "7dafe381554f4155d0e879da089a1c066c5d20ce51530683ad73071baf7d6fcf"
-    version "5.5.0"
+    url "https://github.com/ash/rakupp/releases/download/v5.6.2/rakupp-macos-universal.tar.gz"
+    sha256 "f5dd4ac5b8ebb6b9afb9b09aa76e558f2b0a9f1f2bd1db5dcd86434a48e74dfd"
+    version "5.6.2"
   end
   on_linux do
     depends_on "cmake" => :build
